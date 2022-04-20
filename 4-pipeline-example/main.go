@@ -2,6 +2,7 @@ package main
 
 import "fmt"
 
+// convert discrete values into a stream (chan)
 func generator(done <-chan interface{}, intergers ...int) <-chan int {
 	intStream := make(chan int)
 	go func() {
