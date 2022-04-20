@@ -42,6 +42,7 @@ func take(done <-chan any, valueStream <-chan any, num int) <-chan any {
 	return takeStream
 }
 
+// we utalised the fact that sending and receiving to and from a nil channel will block
 func tee(done <-chan any, in <-chan any) (<-chan any, <-chan any) {
 	outOne := make(chan any)
 	outTwo := make(chan any)
@@ -53,9 +54,9 @@ func tee(done <-chan any, in <-chan any) (<-chan any, <-chan any) {
 			for i := 0; i < 2; i++ {
 				select {
 				case <-done:
-				case outOne <- val:
+				case outOne <- val: // after this has been selected we set shadow of outOne to nil so it blocks forever
 					outOne = nil
-				case outTwo <- val:
+				case outTwo <- val: // after this has been selected we set shadow of outTwo to nil so it blocks forever
 					outTwo = nil
 				}
 			}
