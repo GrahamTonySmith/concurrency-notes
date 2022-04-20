@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-func repeateGenerator(done <-chan interface{}, values ...interface{}) <-chan interface{} {
+func repeat(done <-chan interface{}, values ...interface{}) <-chan interface{} {
 	valueStream := make(chan interface{})
 	go func() {
 		defer close(valueStream) // run after return hits on the close
@@ -26,7 +26,7 @@ func repeateGenerator(done <-chan interface{}, values ...interface{}) <-chan int
 
 func main() {
 	done := make(chan interface{})
-	intGenerator := repeateGenerator(done, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
+	intGenerator := repeat(done, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
 
 	go func() {
 		time.Sleep(20 * time.Second)
